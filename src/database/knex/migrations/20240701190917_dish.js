@@ -1,9 +1,9 @@
 exports.up = knex => knex.schema.createTable("dish", table => {
     table.increments("id")
-    table.text("name")
-    table.text("category")
-    table.integer("price")
-    table.text("description")
+    table.text("name").notNullable()
+    table.text("category").notNullable()
+    table.integer("price").notNullable()
+    table.text("description").notNullable()
     table.text("image_dish")
 
     table.timestamp("created_at").default(knex.fn.now())
