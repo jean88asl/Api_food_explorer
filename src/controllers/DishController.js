@@ -49,7 +49,8 @@ class DishController {
             name: dish.name,
             category: dish.category,
             price: dish.price,
-            description: dish.description
+            description: dish.description,
+            updated_at: new Date().toISOString()
         }
 
         await knex("dish").where({ id }).update(updateDish)
