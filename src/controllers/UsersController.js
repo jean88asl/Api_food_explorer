@@ -28,6 +28,8 @@ class UsersController {
 
         response.status(201).json("dados gravados com sucesso")
     }
+
+    
 }
 
 module.exports = UsersController
