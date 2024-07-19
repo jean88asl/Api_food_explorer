@@ -25,12 +25,15 @@ class DishController {
 
         await knex("ingredients").insert(ingredientsList)
 
-        response.status(200).json("Prato adicionado com sucesso.")
+        response.status(200).json({
+            message: "Prato adicionado com sucesso.",
+            id: dish_id
+        })
     }
 
     async update(request, response) {
         const { id } = request.params
-        const { name, category, price, description } = request.body
+        const { name, category, price, description, ingredients } = request.body
 
         Number(price)
 
@@ -54,6 +57,17 @@ class DishController {
         }
 
         await knex("dish").where({ id }).update(updateDish)
+
+        await knex("ingredients").where({ dish_id: id }).delete()
+
+        const ingredientsList = ingredients.map(ingredient => {
+            return {
+                name: ingredient,
+                dish_id: id
+            }
+        })
+
+        await knex("ingredients").insert(ingredientsList)
 
         response.status(201).json("Dados atualizados com sucesso.")
     }
