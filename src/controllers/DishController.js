@@ -39,7 +39,7 @@ class DishController {
 
         const dish = await knex("dish").where({ id }).first()
 
-        if(!dish) {
+        if (!dish) {
             throw new AppError("prato não encontrado.")
         }
 
@@ -95,9 +95,22 @@ class DishController {
     }
     // mostrar todos os registros
     async index(request, response) {
-        const dishes = await knex("dish").orderBy("name", 'asc')
+        const { name } = request.query
 
-        response.status(200).json(dishes)
+        if (name) {
+            const search = await knex("ingredients as i")
+                .select("d.id", "d.name as dish_name", "i.name as ingredient_name")
+                .innerJoin("dish as d", "d.id", "i.dish_id")
+                .where("d.name", "like", `%${name}%`)
+                .orWhere("i.name", "like", `%${name}%`)
+                .limit(7)
+
+            return response.status(200).json(search)
+        } else {
+            const dishes = await knex("dish").orderBy("name", 'asc')
+            return response.status(200).json(dishes)
+        }
+
     }
 }
 
