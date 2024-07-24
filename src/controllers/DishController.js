@@ -103,7 +103,7 @@ class DishController {
                 .innerJoin("dish as d", "d.id", "i.dish_id")
                 .where("d.name", "like", `%${name}%`)
                 .orWhere("i.name", "like", `%${name}%`)
-                .limit(7)
+                .groupBy("d.name")
 
             return response.status(200).json(search)
         } else {
