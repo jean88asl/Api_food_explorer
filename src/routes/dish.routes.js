@@ -16,8 +16,8 @@ const dishImageController = new DishImageController()
 
 // rotas admin
 dishRoutes.post("/", ensureAuthenticated, checkUserAuthorization(["admin"]), dishController.create)
-dishRoutes.patch("/image/:dish_id", ensureAuthenticated, checkUserAuthorization(["admin"]),upload.single("image"), dishImageController.update)
-dishRoutes.put("/:id", checkUserAuthorization(["admin"]), dishController.update)
+dishRoutes.patch("/image/:dish_id", ensureAuthenticated, checkUserAuthorization(["admin"]), upload.single("image"), dishImageController.update)
+dishRoutes.put("/:id", ensureAuthenticated, checkUserAuthorization(["admin"]), dishController.update)
 
 // rotas de usuário
 dishRoutes.get("/", dishController.index)

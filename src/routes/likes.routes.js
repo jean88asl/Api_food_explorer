@@ -8,5 +8,7 @@ const likesController = new LikesController()
 
 likesRoutes.post("/:dish_id", ensureAuthenticated, likesController.create)
 likesRoutes.get("/:dish_id", ensureAuthenticated, likesController.show)
+likesRoutes.get("/", ensureAuthenticated, likesController.index)
+likesRoutes.delete("/:dish_id", ensureAuthenticated, likesController.delete)
 
 module.exports = likesRoutes

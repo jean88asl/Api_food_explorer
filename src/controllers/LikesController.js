@@ -33,17 +33,26 @@ class LikesController {
         response.status(200).json(dataLike)
     }
 
-    async update(request, response) {
+    async index(request, response) {
+        const user_id = request.user.id
+        const favorites = await knex("likes as l")
+            .select("d.name", "d.image_dish", "l.id")
+            .innerJoin("dish as d", "d.id", "l.dish_id")
+            .where({user_id})
+            .orderBy("d.name")
+
+        response.status(200).json(favorites)    
+    }
+
+    async delete(request, response) {
         const { dish_id } = request.params
         const user_id = request.user.id
 
-        await knex('likes').insert({
-            dish_id,
-            user_id,
-            liked: true,
-        })
+        await knex('likes')
+            .delete()
+            .where({dish_id, user_id})
 
-        response.status(200).json("update like.")
+        response.status(200).json("liked removed")
     }
 }
 
