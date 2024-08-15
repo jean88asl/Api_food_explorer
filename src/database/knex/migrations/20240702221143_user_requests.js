@@ -1,11 +1,13 @@
 exports.up = knex => knex.schema.createTable("user_requests", table => {
     table.increments("id")
-    table.text("list_of_dish")
-    table.integer("total")
-    table.text("type_of_payment")
-    table.integer("user_id").references("id").inTable("user").onDelete("CASCADE")
+    table.text("payment_type").nullable()
+    table.integer("total_requests").notNullable()
+    table.integer("user_id").notNullable().references("id").inTable("users").onDelete("CASCADE")
+    table.enum("status", ["pendente", "preparando", "entregue"], {useNative: true, enumName: "status"})
+        .notNullable().default("pendente")
 
-    table.timestamp("created_at").default(knex.fn.now())
+    table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
+    table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable()
 })
 
 exports.down = knex => knex.schema.dropTable("user_requests")

@@ -6,8 +6,8 @@ exports.up = knex => knex.schema.createTable("likes", table => {
 
     table.boolean('liked').notNullable();
 
-    table.timestamp("created_at").default(knex.fn.now())
-    table.timestamp("updated_at").default(knex.fn.now())
+    table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
+    table.timestamp("updated_at").defaultTo(knex.fn.now()).notNullable()
 
     table.unique(['dish_id', 'user_id']);
 })

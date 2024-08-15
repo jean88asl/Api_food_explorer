@@ -4,7 +4,7 @@ const AppError = require("../utils/App.Error")
 
 class UsersController {
     async create(request, response) {
-        const { name, email, password } = request.body
+        const { name, email, password, role_type } = request.body
 
         if (!name || !email || !password) {
             throw new AppError("Todos os dados são obrigatórios!")
@@ -17,16 +17,22 @@ class UsersController {
         }
 
         const hashedPassword = await hash(password, 8)
+        const authorizationType = role_type ? role_type : 'user' 
+
+        if(authorizationType === 'admin' && email !== "root@email.com") {
+            throw new AppError("O usuário admin não pode ser criado.")    
+        }
 
         const user = {
             name,
             email,
             password: hashedPassword,
+            role: authorizationType
         }
 
         await knex("users").insert(user)
 
-        response.status(201).json("dados gravados com sucesso")
+        return response.status(201).json("dados gravados com sucesso")
     }
 
     
