@@ -1,12 +1,13 @@
 const knex = require('../database/knex')
-const moment = require("moment-timezone")
+const moment = require("moment-timezone");
+const AppError = require('../utils/App.Error');
 
 class UserRequestsController {
     async create(request, response) {
         const { list_items, type, total } = request.body;
         const user_id = request.user.id;
 
-        const currentTime = moment().tz("America/Sao_Paulo").format();
+        const currentTime = moment().tz("America/Sao_Paulo").format()
 
         const data = {
             payment_type: type,
@@ -39,31 +40,57 @@ class UserRequestsController {
     }
 
     async index(request, response) {
-        const user_id = request.user.id;
+        const user_id = request.user.id
+        const role = request.user.role
 
-        // const dataRequests = await knex("request_items as ri")
-        //     .select(
-        //         "ur.id",
-        //         "ri.dish_name",
-        //         "ri.quantity",
-        //         "ur.updated_at")
-        //     .innerJoin("user_requests as ur", "ur.id", "ri.request_id")
-        //     .where({ user_id })
-        //     .orderBy("ur.updated_at", 'desc')
+        if (role !== 'admin') {
+            const dataRequests = await knex("user_requests").where({ user_id }).orderBy("updated_at", 'asc')
+            const dataItems = await knex("request_items").where({ id_user: user_id })
 
-        const dataRequests = await knex("user_requests").where({ user_id }).orderBy("updated_at", 'desc')
-        const dataItems = await knex("request_items").where({id_user: user_id})
+            const requestWithItems = dataRequests.map(data => {
+                const itemsOfRequest = dataItems.filter(item => item.request_id === data.id)
 
-        const requestWithItems = dataRequests.map(data => {
-            const itemsOfRequest = dataItems.filter(item => item.request_id === data.id) 
+                return {
+                    ...data,
+                    items: itemsOfRequest
+                }
+            })
+            response.status(200).json(requestWithItems)
+        } else {
+            const dataRequestsAdm = await knex("user_requests")
+            const dataItemsAdm = await knex("request_items")
 
-            return {
-                ...data,
-                items: itemsOfRequest
-            }
-        })
+            const requestWithItemsAdm = dataRequestsAdm.map(data => {
+                const itemsOfRequest = dataItemsAdm.filter(item => item.request_id === data.id)
 
-        response.status(200).json(requestWithItems)
+                return {
+                    ...data,
+                    items: itemsOfRequest
+                }
+            })
+
+            response.status(200).json(requestWithItemsAdm)
+        }
+    }
+
+    async update(request, response) {
+        const { id, newStatus } = request.body
+        const role = request.user.role
+
+        const currentTime = moment().tz("America/Sao_Paulo").format()
+
+        if (role === "admin") {
+            await knex("user_requests")
+                .where({ id })
+                .update({
+                    status: newStatus,
+                    updated_at: currentTime
+                })
+
+            response.status(200).json("Dados atualizados com sucesso!")
+        } else {
+            throw new AppError("Usuário não tem permissão para efetuar a mudança")
+        }
     }
 }
 
