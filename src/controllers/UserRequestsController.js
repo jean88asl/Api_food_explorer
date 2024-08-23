@@ -44,7 +44,7 @@ class UserRequestsController {
         const role = request.user.role
 
         if (role !== 'admin') {
-            const dataRequests = await knex("user_requests").where({ user_id }).orderBy("updated_at", 'asc')
+            const dataRequests = await knex("user_requests").where({ user_id }).orderBy("id", 'desc')
             const dataItems = await knex("request_items").where({ id_user: user_id })
 
             const requestWithItems = dataRequests.map(data => {
@@ -57,7 +57,7 @@ class UserRequestsController {
             })
             response.status(200).json(requestWithItems)
         } else {
-            const dataRequestsAdm = await knex("user_requests")
+            const dataRequestsAdm = await knex("user_requests").orderBy("id", 'desc')
             const dataItemsAdm = await knex("request_items")
 
             const requestWithItemsAdm = dataRequestsAdm.map(data => {

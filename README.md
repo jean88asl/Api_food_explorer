@@ -35,10 +35,6 @@ API Food Explorer é uma aplicação backend baseada em Node.js, que permite os 
 
 - O SQLite é usado como banco de dados local e a MySQL é usada na produção.
 
-### Banco de dados
-
-- O projeto 
-
 ### Migrações
 
 Para executar as migrações utilize o comando:
@@ -52,8 +48,9 @@ Para executar as migrações utilize o comando:
 Na raiz do projeto crie um arquivo ".env" e defina as variáveis abaixo:
 
  ```cl
-AUTH_SECRET=4e5d3e09cb06e31f4050b0cc3e9b9c6e
-SERVER_PORT=3000
+AUTH_SECRET=YOUR_SECRET
+SERVER_PORT=YOUR_PORT
+EMAIL_ADMIN=YOUR_ADM_EMAIL
 ```
 
 ## Uso

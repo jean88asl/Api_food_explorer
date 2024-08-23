@@ -19,7 +19,7 @@ class UsersController {
         const hashedPassword = await hash(password, 8)
         const authorizationType = role_type ? role_type : 'user' 
 
-        if(authorizationType === 'admin' && email !== "root@email.com") {
+        if(authorizationType === 'admin' && email !== process.env.EMAIL_ADMIN) {
             throw new AppError("O usuário admin não pode ser criado.")    
         }
 
