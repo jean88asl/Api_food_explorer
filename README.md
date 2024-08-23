@@ -1,6 +1,6 @@
 # API Food Explorer
 
-API Food Explorer é uma aplicação backend baseada em Node.js, que permite os restaurantes explorem pratos e gerenciam pedidos. Esta API foi criada usando Express, autenticação via JWT; gerenciamento de arquivos com Multer; e bancos de dados SQLite e MySQL usando Knex.
+API Food Explorer é uma aplicação backend baseada em Node.js, que permite os restaurantes explorem pratos e gerenciam pedidos. Esta API foi criada usando Express, autenticação via JWT, gerenciamento de arquivos com Multer e bancos de dados SQLite e MySQL usando Knex.
 
 ## Índice
 
