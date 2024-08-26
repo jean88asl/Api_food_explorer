@@ -33,5 +33,5 @@ app.use((error, request, response, next) => {
     })
 })
 
-const PORT = process.env.SERVER_PORT || 3333
+const PORT = process.env.PORT || 3333
 app.listen(PORT, () => console.log(`Acesse aqui http://localhost.com:${PORT}`))
