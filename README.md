@@ -49,7 +49,6 @@ Na raiz do projeto crie um arquivo ".env" e defina as variáveis abaixo:
 
  ```cl
 AUTH_SECRET=YOUR_SECRET
-SERVER_PORT=YOUR_PORT
 EMAIL_ADMIN=YOUR_ADM_EMAIL
 ```
 
